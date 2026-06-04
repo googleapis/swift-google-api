@@ -17,33 +17,28 @@
 import Foundation
 import GoogleCloudWkt
 
-/// Selects and configures the service controller used by the service.
-///
-/// Example:
-///
-///     control:
-///       environment: servicecontrol.googleapis.com
-public struct Control: Codable, Equatable, GoogleCloudWkt._AnyPackable,
+/// `BatchingConfigProto` defines the batching configuration for an API method.
+public struct BatchingConfigProto: Codable, Equatable, GoogleCloudWkt._AnyPackable,
   Sendable
 {
-  /// The service controller environment to use. If empty, no control plane
-  /// features (like quota and billing) will be enabled. The recommended value
-  /// for most services is servicecontrol.googleapis.com.
-  public var environment: Swift.String
+  /// The thresholds which trigger a batched request to be sent.
+  public var thresholds: BatchingSettingsProto?
 
-  /// Defines policies applying to the API methods of the service.
-  public var methodPolicies: [MethodPolicy]
+  /// The request and response fields used in batching.
+  public var batchDescriptor: BatchingDescriptorProto?
 
-  /// Initialize a new instance of `Control`.
+  /// Initialize a new instance of `BatchingConfigProto`.
   public init(
-    environment: Swift.String = Swift.String(),
-    methodPolicies: [MethodPolicy] = [],
+    thresholds: BatchingSettingsProto? = nil,
+    batchDescriptor: BatchingDescriptorProto? = nil,
   ) {
-    self.environment = environment
-    self.methodPolicies = methodPolicies
+    self.thresholds = thresholds
+    self.batchDescriptor = batchDescriptor
   }
 
-  public static var _anyTypeUrl: String { return "type.googleapis.com/google.api.Control" }
+  public static var _anyTypeUrl: String {
+    return "type.googleapis.com/google.api.BatchingConfigProto"
+  }
   public init(fromAny any: GoogleCloudWkt.`Any`) throws {
     self = try GoogleCloudWkt._slowAnyDeserialize(Self.self, from: any)
   }
